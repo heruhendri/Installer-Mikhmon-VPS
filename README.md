@@ -126,4 +126,3 @@ bash install-mikhmon.sh
 
 ---
 
-sdsd
