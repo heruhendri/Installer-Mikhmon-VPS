@@ -1,19 +1,134 @@
-Siap — saya sudah membuat script `auto-install-mikhmon.sh` lengkap beserta README di canvas (file: **Auto-install-mikhmon**).
+Selamat mencoba 💪
+Berikut **skrip otomatis (auto installer)** untuk **Mikhmon Multi User + HTTPS (Certbot)** — tinggal **copy-paste sekali jalan** di VPS kamu (NAT VPS / Ubuntu 20.04–22.04).
+Skrip ini akan:
 
-Langkah selanjutnya yang saya sarankan (singkat):
+* Install semua dependensi (Nginx, PHP, Git, Certbot)
+* Clone **Mikhmon Multi User (versi fisabiliyusri)**
+* Setup Nginx otomatis
+* Pasang HTTPS pakai **Let’s Encrypt (Certbot)**
+* Support **Cloudflare DNS** juga
 
-1. Tinjau isi script di panel file (saya sudah menaruh komentar dan variabel yang harus Anda ganti).
-2. Buat repository GitHub baru, tambahkan file script + file README dari canvas, commit & push.
-3. Untuk menginstall pada VPS, jalankan (contoh setelah Anda push ke GitHub):
+---
 
-```bash
-curl -sSL https://raw.githubusercontent.com/heruhendri/Installer-Mikhmon-VPS/main/auto-install-mikhmon.sh | sudo bash -s -- --domain mikhmon.example.com --dbpass 'StrongPass123'
+### 🧾 **Langkah-langkah**
+
+#### 1️⃣ Login ke VPS via SSH:
+
+```
+ssh root@ip-vps-kamu -p [port NAT]
 ```
 
-Kalau mau, saya bisa langsung:
+#### 2️⃣ Jalankan skrip di bawah ini (Sudah didalam File Install.sh):
 
-* Update script agar mendukung Nginx juga; atau
-* Sesuaikan script dengan struktur MikhMon yang Anda punya (beri path repo atau ZIP); atau
-* Buatkan file `systemd`/CI sederhana untuk otomatisasi push ke GitHub.
+```bash
+#!/bin/bash
+# ============================================
+# Mikhmon Multi Auto Installer + SSL (Certbot)
+# By Hendri 😎
+# ============================================
 
-Mau saya lanjutkan dengan salah satu opsi di atas?
+echo "============================================"
+echo "     INSTALLER MIKHMON MULTI + HTTPS"
+echo "============================================"
+echo ""
+
+read -p "Masukkan domain/subdomain (contoh: mikhmon.hendri.site): " domain
+
+# Update & install dependensi
+apt update && apt upgrade -y
+apt install nginx php php-fpm php-cli php-curl php-zip php-xml php-mbstring unzip curl git certbot python3-certbot-nginx -y
+
+# Hentikan default nginx site
+rm -f /etc/nginx/sites-enabled/default
+
+# Buat folder web
+mkdir -p /var/www/mikhmon
+cd /var/www/
+
+# Clone Mikhmon Multi User
+git clone https://github.com/fisabiliyusri/MikhmonV3-Multiuser.git mikhmon
+
+# Set permission
+chown -R www-data:www-data /var/www/mikhmon
+chmod -R 755 /var/www/mikhmon
+
+# Buat konfigurasi Nginx
+cat > /etc/nginx/sites-available/mikhmon.conf <<EOF
+server {
+    listen 80;
+    server_name $domain;
+
+    root /var/www/mikhmon;
+    index index.php index.html;
+
+    location / {
+        try_files \$uri \$uri/ /index.php?\$query_string;
+    }
+
+    location ~ \.php\$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php-fpm.sock;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+}
+EOF
+
+ln -s /etc/nginx/sites-available/mikhmon.conf /etc/nginx/sites-enabled/
+
+# Test & reload Nginx
+nginx -t && systemctl reload nginx
+
+# Pasang SSL
+echo ""
+echo "🔒 Memasang SSL Let's Encrypt untuk $domain..."
+certbot --nginx -d $domain --non-interactive --agree-tos -m admin@$domain --redirect
+
+# Restart service
+systemctl restart nginx
+systemctl restart php*-fpm
+
+# Info selesai
+echo ""
+echo "============================================"
+echo "✅ INSTALASI SELESAI!"
+echo "URL: https://$domain"
+echo "Lokasi file: /var/www/mikhmon/"
+echo "============================================"
+```
+
+---
+
+#### 3️⃣ Simpan skrip (opsional, biar bisa digunakan lagi)
+
+Kamu bisa simpan jadi file misalnya:
+
+```bash
+nano install-mikhmon.sh
+```
+
+Lalu paste isi di atas → Simpan (`CTRL+X`, `Y`, `ENTER`), kemudian jalankan:
+
+```bash
+bash install-mikhmon.sh
+```
+
+---
+
+### 💡 Catatan Tambahan
+
+* Pastikan **subdomain sudah diarahkan ke IP VPS kamu** (kalau pakai NAT VPS, gunakan IP + port NAT di Cloudflare).
+* Jika kamu pakai **Cloudflare**, set **SSL Mode = Full (strict)**.
+* Jika port 80/443 tidak langsung terbuka (karena NAT), SSL mungkin perlu dijalankan lewat **Cloudflare Flexible**.
+
+---
+
+Kalau kamu kasih tahu:
+
+* IP atau hostname NAT VPS kamu
+* dan subdomain kamu
+
+saya bisa bantu **sesuaikan skrip-nya otomatis dengan port NAT** dan **Cloudflare SSL Flexible Mode** biar langsung jalan tanpa error.
+Kamu mau saya bantu buat versi khusus untuk **NAT port forwarding** juga?
