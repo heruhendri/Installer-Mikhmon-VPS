@@ -125,10 +125,3 @@ bash install-mikhmon.sh
 
 ---
 
-Kalau kamu kasih tahu:
-
-* IP atau hostname NAT VPS kamu
-* dan subdomain kamu
-
-saya bisa bantu **sesuaikan skrip-nya otomatis dengan port NAT** dan **Cloudflare SSL Flexible Mode** biar langsung jalan tanpa error.
-Kamu mau saya bantu buat versi khusus untuk **NAT port forwarding** juga?

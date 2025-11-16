@@ -1,7 +1,7 @@
 #!/bin/bash
 # ============================================
 # Mikhmon Multi Auto Installer + SSL (Certbot)
-# By ChatGPT for Hendri 😎
+# By Hendri 😎
 # ============================================
 
 echo "============================================"
@@ -9,7 +9,7 @@ echo "     INSTALLER MIKHMON MULTI + HTTPS"
 echo "============================================"
 echo ""
 
-read -p "Masukkan domain/subdomain (contoh: mikhmon.hendri.my.id): " domain
+read -p "Masukkan domain/subdomain (contoh: mikhmon.hendri.site): " domain
 
 # Update & install dependensi
 apt update && apt upgrade -y
@@ -23,7 +23,7 @@ mkdir -p /var/www/mikhmon
 cd /var/www/
 
 # Clone Mikhmon Multi User
-git clone https://github.com/fisabiliyusri/MikhmonV3-Multiuser.git mikhmon
+git clone https://github.com/heruhendri/Mikhmon-PPPoE-Ros.6.git
 
 # Set permission
 chown -R www-data:www-data /var/www/mikhmon
