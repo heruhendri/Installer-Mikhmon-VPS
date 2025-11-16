@@ -46,7 +46,7 @@ mkdir -p /var/www/mikhmon
 cd /var/www/
 
 # Clone Mikhmon Multi User
-git clone https://github.com/fisabiliyusri/MikhmonV3-Multiuser.git mikhmon
+git clone https://github.com/heruhendri/MikhmonV3-Multiuser.git mikhmon
 
 # Set permission
 chown -R www-data:www-data /var/www/mikhmon
