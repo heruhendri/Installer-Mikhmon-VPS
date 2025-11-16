@@ -17,6 +17,7 @@ Skrip ini akan:
 ```
 ssh root@ip-vps-kamu -p [port NAT]
 ```
+okk
 
 #### 2️⃣ Jalankan skrip di bawah ini (Sudah didalam File Install.sh):
 
