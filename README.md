@@ -3,13 +3,13 @@ Berikut **skrip otomatis (auto installer)** untuk **Mikhmon Multi User + HTTPS (
 Skrip ini akan:
 
 * Install semua dependensi (Nginx, PHP, Git, Certbot)
-* Clone **Mikhmon Multi User (versi fisabiliyusri)**
+* Clone **Mikhmon PPPoE User (versi hendri)**
 * Setup Nginx otomatis
 * Pasang HTTPS pakai **Let’s Encrypt (Certbot)**
 * Support **Cloudflare DNS** juga
 
 ---
-## OPSI INSTALL OTOMATIS
+## 📌 OPSI INSTALL OTOMATIS ⬇️
 
 ```
 bash <(curl -s https://raw.githubusercontent.com/heruhendri/Installer-Mikhmon-VPS/master/install-mikhmon.sh)
@@ -126,7 +126,7 @@ bash install-mikhmon.sh
 ---
 
 ### 💡 Catatan Tambahan
-
+* Pastikan anda **sudah menambahkan port forwarding terlebih dahulu Https 443 dan Https 80**
 * Pastikan **subdomain sudah diarahkan ke IP VPS kamu** (kalau pakai NAT VPS, gunakan IP + port NAT di Cloudflare).
 * Jika kamu pakai **Cloudflare**, set **SSL Mode = Full (strict)**.
 * Jika port 80/443 tidak langsung terbuka (karena NAT), SSL mungkin perlu dijalankan lewat **Cloudflare Flexible**.
