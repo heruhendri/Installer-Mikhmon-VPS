@@ -5,7 +5,7 @@
 # ============================================
 
 echo "============================================"
-echo "     INSTALLER MIKHMON MULTI + HTTPS"
+echo "     INSTALLER MIKHMON MULTI + HTTPS BY HENDRI"
 echo "============================================"
 echo ""
 
