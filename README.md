@@ -9,8 +9,15 @@ Skrip ini akan:
 * Support **Cloudflare DNS** juga
 
 ---
+## OPSI INSTALL OTOMATIS
+
+```
+bash <(curl -s https://raw.githubusercontent.com/heruhendri/Installer-Mikhmon-VPS/master/install-mikhmon.sh)
+```
+## 📰 Atau Instalasi Manual Menggunakan Cara Seperti Dibawah↙️
 
 ### 🧾 **Langkah-langkah**
+
 ⚠️⚠️Pastikan anda sudah menambahkan port forwarding dan mendaftarkan domain anda di cloudflare⚠️⚠️
 
 #### 1️⃣ Login ke VPS via SSH:
