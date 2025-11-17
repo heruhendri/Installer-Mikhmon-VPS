@@ -19,23 +19,23 @@ apt install nginx php php-fpm php-cli php-curl php-zip php-xml php-mbstring unzi
 rm -f /etc/nginx/sites-enabled/default
 
 # Buat folder web
-mkdir -p /var/www/mikhmon
+mkdir -p /var/www/Mikhmon-PPPoE-Ros.6
 cd /var/www/
 
 # Clone Mikhmon Multi User
 git clone https://github.com/heruhendri/Mikhmon-PPPoE-Ros.6.git
 
 # Set permission
-chown -R www-data:www-data /var/www/mikhmon
-chmod -R 755 /var/www/mikhmon
+chown -R www-data:www-data /var/www/Mikhmon-PPPoE-Ros.6
+chmod -R 755 /var/www/Mikhmon-PPPoE-Ros.6
 
 # Buat konfigurasi Nginx
-cat > /etc/nginx/sites-available/mikhmon.conf <<EOF
+cat > /etc/nginx/sites-available/Mikhmon-PPPoE-Ros.6.conf <<EOF
 server {
     listen 80;
     server_name $domain;
 
-    root /var/www/mikhmon;
+    root /var/www/Mikhmon-PPPoE-Ros.6;
     index index.php index.html;
 
     location / {
@@ -53,7 +53,7 @@ server {
 }
 EOF
 
-ln -s /etc/nginx/sites-available/mikhmon.conf /etc/nginx/sites-enabled/
+ln -s /etc/nginx/sites-available/Mikhmon-PPPoE-Ros.6.conf /etc/nginx/sites-enabled/
 
 # Test & reload Nginx
 nginx -t && systemctl reload nginx
@@ -72,5 +72,5 @@ echo ""
 echo "============================================"
 echo "✅ INSTALASI SELESAI!"
 echo "URL: https://$domain"
-echo "Lokasi file: /var/www/mikhmon/"
+echo "Lokasi file: /var/www/Mikhmon-PPPoE-Ros.6/"
 echo "============================================"
