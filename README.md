@@ -7,8 +7,14 @@ Skrip ini akan:
 * Setup Nginx otomatis
 * Pasang HTTPS pakai **Let’s Encrypt (Certbot)**
 * Support **Cloudflare DNS** juga
-
 ---
+### Langkah Pre Install (langkah sebelum melakukan instalasi)
+* Memiliki Domain Aktif
+* Pointing Domain Ke Cloudfare (Optional)
+* Pinting Ip vps ke Doamin Anda
+* Membuat Port Forwarding Ke Di VPS (Jika Menggunakan NatVps)
+* Install Git,curl,bash di vps
+
 ## 📌 OPSI INSTALL OTOMATIS ⬇️
 
 ```
