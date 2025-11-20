@@ -19,14 +19,14 @@ apt install nginx php php-fpm php-cli php-curl php-zip php-xml php-mbstring unzi
 rm -f /etc/nginx/sites-enabled/default
 
 # Buat folder web
-mkdir -p /var/www/Mikhmon-PPPoE-Ros.6
-cd /var/www/
+mkdir -p /var/www/html/Mikhmon-PPPoE-Ros.6
+cd /var/www/html/
 
 # Clone Mikhmon Multi User
 git clone https://github.com/heruhendri/Mikhmon-PPPoE-Ros.6.git
 
 # Set permission
-chown -R www-data:www-data /var/www/Mikhmon-PPPoE-Ros.6
+chown -R www-data:www-data /var/www/html/Mikhmon-PPPoE-Ros.6
 chmod -R 755 /var/www/Mikhmon-PPPoE-Ros.6
 
 # Buat konfigurasi Nginx
@@ -35,7 +35,7 @@ server {
     listen 80;
     server_name $domain;
 
-    root /var/www/Mikhmon-PPPoE-Ros.6;
+    root /var/www/html/Mikhmon-PPPoE-Ros.6;
     index index.php index.html;
 
     location / {
@@ -72,5 +72,5 @@ echo ""
 echo "============================================"
 echo "✅ INSTALASI SELESAI!"
 echo "URL: https://$domain"
-echo "Lokasi file: /var/www/Mikhmon-PPPoE-Ros.6/"
+echo "Lokasi file: /var/www/html/Mikhmon-PPPoE-Ros.6/"
 echo "============================================"
