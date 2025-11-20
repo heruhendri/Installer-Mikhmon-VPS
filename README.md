@@ -8,7 +8,7 @@ Skrip ini akan:
 * Pasang HTTPS pakai **Let’s Encrypt (Certbot)**
 * Support **Cloudflare DNS** juga
 ---
-### Langkah Pre Install (langkah sebelum melakukan instalasi)
+### ⚠️ Langkah Pre Install (langkah sebelum melakukan instalasi)
 * Memiliki Domain Aktif
 * Pointing Domain Ke Cloudfare (Optional)
 * Pinting Ip vps ke Doamin Anda
