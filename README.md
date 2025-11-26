@@ -1,140 +1,109 @@
-Selamat mencoba 💪
-Berikut **skrip otomatis (auto installer)** untuk **Mikhmon Multi User + HTTPS (Certbot)** — tinggal **copy-paste sekali jalan** di VPS kamu (NAT VPS / Ubuntu 20.04–22.04).
-Skrip ini akan:
 
-* Install semua dependensi (Nginx, PHP, Git, Certbot)
-* Clone **Mikhmon PPPoE User (versi hendri)**
-* Setup Nginx otomatis
-* Pasang HTTPS pakai **Let’s Encrypt (Certbot)**
-* Support **Cloudflare DNS** juga
+
+# ✅ **Script Installer Otomatis Mikhmon Multi + Domain + HTTPS**
+
+## **🟢 Fitur:**
+
+* Install beberapa Mikhmon dalam 1 VPS
+* Input domain manual per instance
+* Auto-create folder per instance
+* Auto-create database per instance
+* Auto-setup Nginx vhost
+* Auto-install SSL Certbot
+* Auto-config PHP full
+* Auto-import database default jika script tersedia
+* Support NATVPS, Ubuntu 20.04–24.04
+
+
+
+
+
+
+
+
+
+
+
+## **Mikhmon Multi Installer + HTTPS Auto (Cloudflare / Certbot)**
+
+Installer ini digunakan untuk menginstall **beberapa instance Mikhmon** dalam 1 VPS sekaligus, dengan fitur:
+
+### 🔥 **Fitur Utama**
+
+* Install **banyak Mikhmon** dalam 1 server
+* **Input manual domain/subdomain** setiap instance
+* Auto setup:
+
+  * Nginx
+  * PHP-FPM
+  * MariaDB
+  * Certbot (HTTPS otomatis)
+  * Permission folder
+* Auto clone repo Mikhmon:
+  👉 [https://github.com/heruhendri/Mikhmon-PPPoE-Ros.6](https://github.com/heruhendri/Mikhmon-PPPoE-Ros.6)
+
 ---
-### ⚠️ Langkah Pre Install (langkah sebelum melakukan instalasi)
-* Memiliki Domain Aktif
-* Pointing Domain Ke Cloudfare (Optional)
-* Pinting Ip vps ke Doamin Anda
-* Membuat Port Forwarding Ke Di VPS (Jika Menggunakan NatVps)
-* Install Git,curl,bash di vps
 
-## 📌 OPSI INSTALL OTOMATIS ⬇️
+## 📦 **Cara Install**
 
-```
-bash <(curl -s https://raw.githubusercontent.com/heruhendri/Installer-Mikhmon-VPS/master/install-mikhmon.sh)
-```
-## 📰 Atau Instalasi Manual Menggunakan Cara Seperti Dibawah↙️
-
-### 🧾 **Langkah-langkah**
-
-⚠️⚠️Pastikan anda sudah menambahkan port forwarding dan mendaftarkan domain anda di cloudflare⚠️⚠️
-
-#### 1️⃣ Login ke VPS via SSH:
-
-```
-ssh root@ip-vps-kamu -p [port NAT]
-```
-
-#### 2️⃣ Jalankan skrip di bawah ini (Sudah didalam File Install.sh):
+### 1. Download script
 
 ```bash
-#!/bin/bash
-# ============================================
-# Mikhmon Multi Auto Installer + SSL (Certbot)
-# By Hendri 😎
-# ============================================
+wget https://raw.githubusercontent.com/heruhendri/NAMAREPO/main/install-mikhmon.sh
+```
 
-echo "============================================"
-echo "     INSTALLER MIKHMON MULTI + HTTPS BY HENDRI"
-echo "============================================"
-echo ""
+*(ganti NAMAREPO setelah sudah upload ke GitHub)*
 
-read -p "Masukkan domain/subdomain (contoh: mikhmon.hendri.site): " domain
+### 2. Beri izin eksekusi
 
-# Update & install dependensi
-apt update && apt upgrade -y
-apt install nginx php php-fpm php-cli php-curl php-zip php-xml php-mbstring unzip curl git certbot python3-certbot-nginx -y
+```bash
+chmod +x install-mikhmon.sh
+```
 
-# Hentikan default nginx site
-rm -f /etc/nginx/sites-enabled/default
+### 3. Jalankan installer
 
-# Buat folder web
-mkdir -p /var/www/mikhmon
-cd /var/www/
-
-# Clone Mikhmon Multi User
-git clone https://github.com/heruhendri/Mikhmon-PPPoE-Ros.6.git
-
-# Set permission
-chown -R www-data:www-data /var/www/mikhmon
-chmod -R 755 /var/www/mikhmon
-
-# Buat konfigurasi Nginx
-cat > /etc/nginx/sites-available/mikhmon.conf <<EOF
-server {
-    listen 80;
-    server_name $domain;
-
-    root /var/www/mikhmon;
-    index index.php index.html;
-
-    location / {
-        try_files \$uri \$uri/ /index.php?\$query_string;
-    }
-
-    location ~ \.php\$ {
-        include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/var/run/php/php-fpm.sock;
-    }
-
-    location ~ /\.ht {
-        deny all;
-    }
-}
-EOF
-
-ln -s /etc/nginx/sites-available/mikhmon.conf /etc/nginx/sites-enabled/
-
-# Test & reload Nginx
-nginx -t && systemctl reload nginx
-
-# Pasang SSL
-echo ""
-echo "🔒 Memasang SSL Let's Encrypt untuk $domain..."
-certbot --nginx -d $domain --non-interactive --agree-tos -m admin@$domain --redirect
-
-# Restart service
-systemctl restart nginx
-systemctl restart php*-fpm
-
-# Info selesai
-echo ""
-echo "============================================"
-echo "✅ INSTALASI SELESAI!"
-echo "URL: https://$domain"
-echo "Lokasi file: /var/www/mikhmon/"
-echo "============================================"
+```bash
+./install-mikhmon.sh
 ```
 
 ---
 
-#### 3️⃣ Simpan skrip (opsional, biar bisa digunakan lagi)
+## 🧩 **Proses Installer**
 
-Kamu bisa simpan jadi file misalnya:
+Script akan meminta:
 
-```bash
-nano install-mikhmon.sh
-```
+1. **Berapa banyak instance**
+2. Nama folder instance
+   Contoh:
 
-Lalu paste isi di atas → Simpan (`CTRL+X`, `Y`, `ENTER`), kemudian jalankan:
+   ```
+   mikhmon1
+   mikhmon2
+   ```
+3. Domain per instance
+   Contoh:
 
-```bash
-bash install-mikhmon.sh
-```
+   ```
+   m1.domain.com
+   m2.domain.com
+   ```
 
 ---
 
-### 💡 Catatan Tambahan
-* Pastikan anda **sudah menambahkan port forwarding terlebih dahulu Https 443 dan Https 80**
-* Pastikan **subdomain sudah diarahkan ke IP VPS kamu** (kalau pakai NAT VPS, gunakan IP + port NAT di Cloudflare).
-* Jika kamu pakai **Cloudflare**, set **SSL Mode = Full (strict)**.
-* Jika port 80/443 tidak langsung terbuka (karena NAT), SSL mungkin perlu dijalankan lewat **Cloudflare Flexible**.
+## 🚀 **Setelah Install**
+
+Setiap instance akan memiliki:
+
+* URL HTTPS otomatis
+* Folder di `/var/www/mikhmon/`
+* Database unik per instance
+
+---
+
+## 🛠️ **Kebutuhan Server**
+
+* Ubuntu 20.04 / 22.04 / 24.04
+* NATVPS / VPS umum
+* DNS domain sudah diarahkan ke IP VPS
 
 ---
