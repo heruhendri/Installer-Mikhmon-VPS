@@ -46,10 +46,17 @@ Installer ini digunakan untuk menginstall **beberapa instance Mikhmon** dalam 1 
 
 ## 📦 **Cara Install**
 
+### Langkah Sebelum Install
+---
+
+```bash
+apt install -y curl bash nano
+```
+
 ### 1. Download script
 
 ```bash
-wget https://raw.githubusercontent.com/heruhendri/NAMAREPO/main/install-mikhmon.sh
+wget https://raw.githubusercontent.com/heruhendri/Installer-Mikhmon-VPS/install-multi/install-mikhmon.sh
 ```
 
 *(ganti NAMAREPO setelah sudah upload ke GitHub)*
