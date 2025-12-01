@@ -1,27 +1,34 @@
-Berikut **README.md final** yang sudah lengkap, rapi, profesional, dan siap dipasang di GitHub repo Anda **Installer-Mikhmon-VPS**.
+
+
+# 🎉 **Mikhmon Multi Installer — PREMIUM Edition**
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Mikhmon-PREMIUM-blueviolet?style=for-the-badge&logo=linux" />
+  <img src="https://img.shields.io/badge/Auto%20Installer-YES-success?style=for-the-badge&logo=gnubash" />
+  <img src="https://img.shields.io/badge/Multi%20Domain-Supported-informational?style=for-the-badge&logo=nginx" />
+  <img src="https://img.shields.io/badge/HTTPS-Cloudflare%20%7C%20Certbot-critical?style=for-the-badge&logo=letsencrypt" />
+</p>
 
 ---
 
-# 🚀 MIKHMON MULTI INSTALLER — PREMIUM EDITION
+<p align="center">
+  <img src="https://raw.githubusercontent.com/heruhendri/Installer-Mikhmon-VPS/main/banner-premium.png" width="85%" />
+</p>
 
-### **Automated Installer for Multi Mikhmon + HTTPS + Nginx**
+> 🚀 **Installer PREMIUM untuk Mikhmon Multi Domain + HTTPS**
+> Mendukung instalasi banyak Mikhmon dalam satu VPS + auto Nginx + auto SSL.
+# ✨ **Fitur PREMIUM**
 
-**By Hendri — 2025**
-
----
-
-## 📌 Tentang Project
-
-Repository ini berisi **installer otomatis** untuk deploy berbagai versi **Mikhmon** secara cepat, aman, dan terstruktur pada VPS / NATVPS / Dedicated Server.
-
-Installer ini juga mendukung:
-
-✔ Multi-instances (bisa install banyak Mikhmon dalam 1 server)
-✔ HTTPS otomatis via Certbot (Let’s Encrypt)
-✔ Auto konfigurasi Nginx
-✔ Auto clone repository versi yang kamu pilih
-✔ Auto permission webserver
-✔ Premium Logs + Error Handler
+* ✔ Install banyak Mikhmon dalam 1 VPS
+* ✔ Input domain manual
+* ✔ Auto konfigurasi NGINX per domain
+* ✔ Auto install PHP, MariaDB, dependensi lengkap
+* ✔ Auto SSL (Cloudflare / Certbot)
+* ✔ Auto folder isolasi per domain
+* ✔ Auto update permission & struktur
+* ✔ Tersedia versi “Sangat Ringan” untuk NAT VPS
+* ✔ Log proses instalasi rapi
+* ✔ Tanpa error *unbound variable*
 
 ---
 
@@ -105,7 +112,17 @@ Setelah instalasi, file akan ditempatkan di:
 ```
 
 ---
+# 🛠 **Perintah Tambahan**
 
+### 🔄 Remove instalasi
+
+```bash
+rm -rf /var/www/mikhmon-namadomain
+rm /etc/nginx/sites-enabled/namadomain.conf
+systemctl restart nginx
+```
+
+---
 ## 📘 Panduan Penggunaan
 
 Setiap versi memiliki dokumentasi lengkap:
@@ -134,26 +151,22 @@ Setiap versi memiliki dokumentasi lengkap:
 Semua error akan ditangkap otomatis dan ditampilkan dengan tampilan premium.
 
 ---
-
-## 🪪 Support
+# 🧑‍💻  **Hendri — Network Engineer / NOC**
 
 Jika butuh bantuan atau custom installer:
-
-📩 **Email**: [heruu2004@gmail.com](mailto:heruu2004@gmail.com)
-🔥 **Telegram**: [https://t.me/GbtTapiPngnSndiri](https://t.me/GbtTapiPngnSndiri)
+* 📩 **Email**: [heruu2004@gmail.com](mailto:heruu2004@gmail.com)
+* 🔥 **Telegram**: [https://t.me/GbtTapiPngnSndiri](https://t.me/GbtTapiPngnSndiri)
 
 ---
 
 ## ❤️ Donasi & Support
-
-Jika installer ini membantu, dukung saya dengan ⭐ di GitHub.
+Jika script ini membantu, bantu bintang ⭐ di GitHub 🙂
+[https://github.com/heruhendri/Installer-Mikhmon-VPS](https://github.com/heruhendri/Installer-Mikhmon-VPS)
 
 ---
+
+
 
 ## 📜 Lisensi
 
-MIT License – Bebas dipakai & dikembangkan.
-
----
-
-Jika Anda ingin menambahkan badge, logo, atau banner README premium, saya bisa buatkan.
+MIT License 
