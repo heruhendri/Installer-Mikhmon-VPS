@@ -11,6 +11,12 @@ REPO_PPP6="https://github.com/heruhendri/Mikhmon-PPPoE-Ros.6"
 REPO_PPP7="https://github.com/heruhendri/Mikhmon-PPPoE-Ros.7"
 REPO_GENIEACS="https://github.com/heruhendri/Mikhmon-GenieAcs-WAgateway"
 
+# README LINK (otomatis ditampilkan setelah instalasi)
+README_AGENT="$REPO_AGENT#readme"
+README_PPP6="$REPO_PPP6#readme"
+README_PPP7="$REPO_PPP7#readme"
+README_GENIEACS="$REPO_GENIEACS#readme"
+
 # ---- Installer dependencies ----
 install_base() {
     apt update -y
@@ -30,10 +36,10 @@ choose_version() {
     read -p "Masukkan pilihan (1-4): " choice
 
     case $choice in
-        1) REPO=$REPO_AGENT; NAME="mikhmon-agent" ;;
-        2) REPO=$REPO_PPP6; NAME="mikhmon-ppp6" ;;
-        3) REPO=$REPO_PPP7; NAME="mikhmon-ppp7" ;;
-        4) REPO=$REPO_GENIEACS; NAME="mikhmon-genieacs" ;;
+        1) REPO=$REPO_AGENT; NAME="mikhmon-agent"; README=$README_AGENT ;;
+        2) REPO=$REPO_PPP6; NAME="mikhmon-ppp6"; README=$README_PPP6 ;;
+        3) REPO=$REPO_PPP7; NAME="mikhmon-ppp7"; README=$README_PPP7 ;;
+        4) REPO=$REPO_GENIEACS; NAME="mikhmon-genieacs"; README=$README_GENIEACS ;;
         *) echo "Pilihan salah"; exit 1;;
     esac
 }
@@ -94,8 +100,12 @@ install_mikhmon() {
     echo ""
     echo "=============================================="
     echo "   INSTALLASI MIKHMON SELESAI!"
-    echo "   URL: https://$DOMAIN"
-    echo "   Folder: /var/www/$FOLDER"
+    echo "----------------------------------------------"
+    echo "URL Akses: https://$DOMAIN"
+    echo "Folder    : /var/www/$FOLDER"
+    echo ""
+    echo "Cara penggunaan:"
+    echo "$README"
     echo "=============================================="
 }
 
