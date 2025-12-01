@@ -12,7 +12,7 @@
 ---
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/heruhendri/Installer-Mikhmon-VPS/main/banner-premium.png" width="85%" />
+  <img src="https://raw.githubusercontent.com/heruhendri/Installer-Mikhmon-VPS/master/banner-premium.png" width="85%" />
 </p>
 
 > 🚀 **Installer PREMIUM untuk Mikhmon Multi Domain + HTTPS**
@@ -62,7 +62,7 @@ Installer ini menggunakan struktur modular agar mudah dikembangkan:
 
 ---
 
-### **2. Flow Installer**
+### **2. Alur Kerja Installer**
 
 ```mermaid
 flowchart TD
@@ -82,23 +82,23 @@ flowchart TD
 ### **1. WGET**
 
 ```bash
-wget -O installer-mikhmon.sh https://raw.githubusercontent.com/heruhendri/Installer-Mikhmon-VPS/master/installer-mikhmon.sh
-chmod +x installer-mikhmon.sh
-./installer-mikhmon.sh
+wget -O installer-mikhmon https://raw.githubusercontent.com/heruhendri/Installer-Mikhmon-VPS/master/installer-mikhmon
+chmod +x installer-mikhmon
+./installer-mikhmon
 ```
 
 ### **2. CURL**
 
 ```bash
-curl -o installer-mikhmon.sh https://raw.githubusercontent.com/heruhendri/Installer-Mikhmon-VPS/master/installer-mikhmon.sh
-chmod +x installer-mikhmon.sh
-./installer-mikhmon.sh
+curl -o installer-mikhmon https://raw.githubusercontent.com/heruhendri/Installer-Mikhmon-VPS/master/installer-mikhmon
+chmod +x installer-mikhmon
+./installer-mikhmon
 ```
 
 ### **3. One-line Auto Install**
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/heruhendri/Installer-Mikhmon-VPS/master/installer-mikhmon.sh)
+bash <(curl -s https://raw.githubusercontent.com/heruhendri/Installer-Mikhmon-VPS/master/installer-mikhmon)
 ```
 
 ---
@@ -118,7 +118,7 @@ Setelah instalasi, file akan ditempatkan di:
 
 ```bash
 rm -rf /var/www/mikhmon-namadomain
-rm /etc/nginx/sites-enabled/namadomain
+rm /etc/nginx/sites-enabled/namadomain.conf
 systemctl restart nginx
 ```
 
@@ -160,7 +160,7 @@ Jika butuh bantuan atau custom installer:
 ---
 
 ## ❤️ Donasi & Support
-Jika script ini membantu, bantu bintang ⭐ di GitHub 🙂
+- Jika script ini membantu, bantu bintang ⭐ di GitHub 🙂
 [https://github.com/heruhendri/Installer-Mikhmon-VPS](https://github.com/heruhendri/Installer-Mikhmon-VPS)
 
 ---
