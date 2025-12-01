@@ -17,7 +17,7 @@
 
 new
 ```bash
-wget https://raw.githubusercontent.com/heruhendri/Installer-Mikhmon-VPS/install-multi/installer-mikhmon.sh
+wget https://raw.githubusercontent.com/heruhendri/Installer-Mikhmon-VPS/refs/heads/install-multi/installer-mikhmon.sh
 ```
 
 
