@@ -15,7 +15,10 @@
 * Support NATVPS, Ubuntu 20.04–24.04
 
 
-
+new
+```bash
+wget https://raw.githubusercontent.com/heruhendri/Installer-Mikhmon-VPS/master/installer-mikhmon.sh
+```
 
 
 
