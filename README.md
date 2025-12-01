@@ -118,7 +118,7 @@ Setelah instalasi, file akan ditempatkan di:
 
 ```bash
 rm -rf /var/www/mikhmon-namadomain
-rm /etc/nginx/sites-enabled/namadomain.conf
+rm /etc/nginx/sites-enabled/namadomain
 systemctl restart nginx
 ```
 
