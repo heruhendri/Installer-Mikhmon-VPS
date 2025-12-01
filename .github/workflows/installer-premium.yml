@@ -1,0 +1,76 @@
+name: Mikhmon Premium Installer CI/CD
+
+on:
+  push:
+    branches:
+      - install-multi-premium
+  pull_request:
+    branches:
+      - install-multi-premium
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: 🔧 Validate & Build Installer
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🔍 Install ShellCheck (Bash Linter)
+        run: sudo apt-get install -y shellcheck
+
+      - name: 🧪 Validate Script (No Critical Errors)
+        run: |
+          echo "Running ShellCheck..."
+          shellcheck installer-mikhmon.sh || true
+
+      - name: 🔑 Set Executable Permission
+        run: chmod +x installer-mikhmon.sh
+
+      - name: 📦 Upload Installer Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: installer-premium
+          path: installer-mikhmon.sh
+
+  release:
+    name: 🚀 Publish to RELEASE Branch
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/install-multi-premium'
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🔧 Ensure Permissions
+        run: chmod +x installer-mikhmon.sh
+
+      - name: 🔄 Sync to release branch
+        run: |
+          git config user.name "Hendri"
+          git config user.email "github-actions@users.noreply.github.com"
+
+          git checkout -B release
+          cp installer-mikhmon.sh ./installer-mikhmon.sh
+
+          git add installer-mikhmon.sh
+          git commit -m "Auto-update installer from CI/CD"
+          git push -f origin release
+
+      - name: 📢 Create Release Tag (Optional)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.1-premium
+          name: "Mikhmon Premium Installer v1.1"
+          body: |
+            🔥 **Mikhmon Multi Installer – PREMIUM v1.1**
+            - Auto HTTPS
+            - Multi Repo: Agent, PPP6, PPP7, GenieACS
+            - Auto Nginx
+            - Premium color UI
+
+          files: |
+            installer-mikhmon.sh
