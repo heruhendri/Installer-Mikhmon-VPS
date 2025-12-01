@@ -175,7 +175,7 @@ install_mikhmon() {
 
     # PREMIUM WATERMARK
     echo -e "${BG_CYAN}${BLACK}${BOLD}      TERIMA KASIH TELAH MENGGUNAKAN INSTALLER PREMIUM      ${RESET}"
-    echo -e "${BG_CYAN}${BLACK}${BOLD}               BY HENDRI — NATVPS INDONESIA                 ${RESET}"
+    echo -e "${BG_CYAN}${BLACK}${BOLD}               BY HENDRI — NATVPS/VPS                       ${RESET}"
     echo ""
 }
 
