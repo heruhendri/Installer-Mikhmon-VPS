@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # ==========================================
-#      MIKHMON PREMIUM INSTALLER v1.0
+#      MIKHMON PREMIUM INSTALLER v1.1
 #             ✨ BY HENDRI ✨
 # ==========================================
 
@@ -17,6 +17,7 @@ BLUE="\e[94m"
 MAGENTA="\e[95m"
 CYAN="\e[96m"
 WHITE="\e[97m"
+BLACK="\e[30m"         # FIX: DITAMBAHKAN AGAR TIDAK ERROR
 
 BG_BLUE="\e[44m"
 BG_MAGENTA="\e[45m"
@@ -36,7 +37,7 @@ echo -e "${WHITE}• Multi Mikhmon Instance"
 echo -e "• HTTPS Certbot SSL"
 echo -e "• Nginx Web Server"
 echo -e "• Auto Clone Repo + Auto Konfigurasi${RESET}"
-echo -e ""
+echo ""
 echo -e "${GREEN}${BOLD}Support:${RESET}"
 echo -e "${YELLOW}📩 Email   :${RESET} ${WHITE}heruu2004@gmail.com"
 echo -e "${YELLOW}🔥 Telegram:${RESET} ${WHITE}https://t.me/GbtTapiPngnSndiri${RESET}"
@@ -71,7 +72,7 @@ error_handler() {
 trap error_handler ERR
 
 # ==========================================
-# STEP: INSTALL BASE PACKAGE
+# PACKAGES
 # ==========================================
 install_base() {
     echo -e "${BLUE}${BOLD}[1/4] Menginstall paket dasar...${RESET}"
@@ -82,7 +83,7 @@ install_base() {
 }
 
 # ==========================================
-# STEP: PILIH VERSI MIKHMON
+# MENU PILIH VERSI
 # ==========================================
 choose_version() {
     echo ""
@@ -104,7 +105,7 @@ choose_version() {
 }
 
 # ==========================================
-# STEP: CONFIGURE NGINX
+# CONFIGURE NGINX
 # ==========================================
 setup_nginx() {
     DOMAIN=$1
@@ -136,7 +137,7 @@ EOF
 }
 
 # ==========================================
-# STEP: CONFIGURE HTTPS SSL
+# HTTPS
 # ==========================================
 setup_https() {
     DOMAIN=$1
@@ -145,7 +146,7 @@ setup_https() {
 }
 
 # ==========================================
-# STEP: INSTALL MIKHMON
+# INSTALL MIKHMON
 # ==========================================
 install_mikhmon() {
     read -p "Masukkan domain (Contoh: mikhmon.hendri.com): " DOMAIN
@@ -170,9 +171,11 @@ install_mikhmon() {
     echo -e "${YELLOW}${BOLD}Panduan Penggunaan:${RESET}"
     echo -e "${CYAN}$README${RESET}"
     echo -e "${GREEN}${BOLD}============================================================${RESET}"
-
     echo ""
-    echo -e "${BG_CYAN}${BLACK}${BOLD}   TERIMA KASIH TELAH MENGGUNAKAN INSTALLER PREMIUM   ${RESET}"
+
+    # PREMIUM WATERMARK
+    echo -e "${BG_CYAN}${BLACK}${BOLD}      TERIMA KASIH TELAH MENGGUNAKAN INSTALLER PREMIUM      ${RESET}"
+    echo -e "${BG_CYAN}${BLACK}${BOLD}               BY HENDRI — NATVPS INDONESIA                 ${RESET}"
     echo ""
 }
 
@@ -184,8 +187,12 @@ main_menu() {
     choose_version
     install_mikhmon
 
+    echo ""
     read -p "Hapus script installer ini? (y/n): " H
-    [[ "$H" == "y" ]] && rm -- "$0"
+    if [[ "$H" == "y" ]]; then
+        rm -- "$0"
+        echo -e "${GREEN}Installer berhasil dihapus.${RESET}"
+    fi
 }
 
 main_menu
