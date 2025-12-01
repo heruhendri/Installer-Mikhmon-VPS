@@ -1,50 +1,84 @@
 #!/bin/bash
-# ============================================
-# Mikhmon Multi Auto Installer + SSL (Certbot)
-# By Hendri 😎
-# ============================================
 
-echo "============================================"
-echo "     INSTALLER MIKHMON MULTI + HTTPS BY HENDRI"
-echo "============================================"
+clear
+echo "==========================================="
+echo "   MIKHMON MULTI INSTALLER (AUTO DOMAIN)"
+echo "==========================================="
+
+# Update server
+apt update -y
+apt upgrade -y
+
+# Install dependencies
+apt install -y nginx mariadb-server git unzip \
+  software-properties-common certbot python3-certbot-nginx
+
+# Install PHP
+apt install -y php php-fpm php-cli php-mysql php-xml php-zip php-curl php-gd php-mbstring
+
+# Restart PHP-FPM
+systemctl restart php*-fpm
+
+# Folder base
+BASE_DIR="/var/www/mikhmon"
+
+mkdir -p $BASE_DIR
+
 echo ""
+echo "Berapa banyak instance Mikhmon yang ingin di-install?"
+read -p "Jumlah: " TOTAL
 
-read -p "Masukkan domain/subdomain (contoh: mikhmon.hendri.site): " domain
+for (( i=1; i<=$TOTAL; i++ ))
+do
+  echo ""
+  echo "=== Instance $i ==="
+  read -p "Masukkan nama folder (contoh: mikhmon1): " FOLDER
+  read -p "Masukkan domain/subdomain (contoh: mikhmon.domain.com): " DOMAIN
 
-# Update & install dependensi
-apt update && apt upgrade -y
-apt install nginx php php-fpm php-cli php-curl php-zip php-xml php-mbstring unzip curl git certbot python3-certbot-nginx -y
+  INST_DIR="$BASE_DIR/$FOLDER"
 
-# Hentikan default nginx site
-rm -f /etc/nginx/sites-enabled/default
+  echo ""
+  echo "[*] Meng-clone repo Mikhmon..."
+  git clone https://github.com/heruhendri/Mikhmon-PPPoE-Ros.6 $INST_DIR
 
-# Buat folder web
-mkdir -p /var/www/html/Mikhmon-PPPoE-Ros.6
-cd /var/www/html/
+  echo "[*] Mengatur permission..."
+  chown -R www-data:www-data $INST_DIR
+  chmod -R 755 $INST_DIR
 
-# Clone Mikhmon Multi User
-git clone https://github.com/heruhendri/Mikhmon-PPPoE-Ros.6.git
+  echo "[*] Membuat database..."
+  DB_NAME="db_${FOLDER}"
+  DB_USER="${FOLDER}_user"
+  DB_PASS=$(openssl rand -hex 6)
 
-# Set permission
-chown -R www-data:www-data /var/www/html/Mikhmon-PPPoE-Ros.6
-chmod -R 755 /var/www/Mikhmon-PPPoE-Ros.6
+  mysql -e "CREATE DATABASE ${DB_NAME};"
+  mysql -e "CREATE USER '${DB_USER}'@'localhost' IDENTIFIED BY '${DB_PASS}';"
+  mysql -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'localhost';"
+  mysql -e "FLUSH PRIVILEGES;"
 
-# Buat konfigurasi Nginx
-cat > /etc/nginx/sites-available/Mikhmon-PPPoE-Ros.6.conf <<EOF
+  echo "Database: $DB_NAME"
+  echo "User: $DB_USER"
+  echo "Password: $DB_PASS"
+
+  echo ""
+  echo "[*] Membuat konfigurasi Nginx..."
+  
+  VHOST="/etc/nginx/sites-available/$DOMAIN"
+
+  cat > $VHOST <<EOF
 server {
     listen 80;
-    server_name $domain;
+    server_name $DOMAIN;
 
-    root /var/www/html/Mikhmon-PPPoE-Ros.6;
+    root $INST_DIR;
     index index.php index.html;
 
     location / {
         try_files \$uri \$uri/ /index.php?\$query_string;
     }
 
-    location ~ \.php\$ {
+    location ~ \.php$ {
         include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/var/run/php/php-fpm.sock;
+        fastcgi_pass unix:/run/php/php-fpm.sock;
     }
 
     location ~ /\.ht {
@@ -53,24 +87,26 @@ server {
 }
 EOF
 
-ln -s /etc/nginx/sites-available/Mikhmon-PPPoE-Ros.6.conf /etc/nginx/sites-enabled/
+  ln -s $VHOST /etc/nginx/sites-enabled/
 
-# Test & reload Nginx
-nginx -t && systemctl reload nginx
+  echo "[*] Restarting Nginx..."
+  systemctl restart nginx
 
-# Pasang SSL
-echo ""
-echo "🔒 Memasang SSL Let's Encrypt untuk $domain..."
-certbot --nginx -d $domain --non-interactive --agree-tos -m admin@$domain --redirect
+  echo ""
+  echo "[*] Instalasi SSL..."
+  certbot --nginx -d $DOMAIN --non-interactive --agree-tos -m admin@$DOMAIN
 
-# Restart service
-systemctl restart nginx
-systemctl restart php*-fpm
+  echo ""
+  echo "==============================================="
+  echo "  INSTANSI $FOLDER SELESAI"
+  echo "  URL : https://$DOMAIN"
+  echo "  DB  : $DB_NAME"
+  echo "  USER: $DB_USER"
+  echo "  PASS: $DB_PASS"
+  echo "==============================================="
+  echo ""
+done
 
-# Info selesai
-echo ""
-echo "============================================"
-echo "✅ INSTALASI SELESAI!"
-echo "URL: https://$domain"
-echo "Lokasi file: /var/www/html/Mikhmon-PPPoE-Ros.6/"
-echo "============================================"
+echo "==============================================="
+echo "  SEMUA INSTAN MIKHMON BERHASIL DIINSTALL"
+echo "==============================================="
