@@ -82,23 +82,23 @@ flowchart TD
 ### **1. WGET**
 
 ```bash
-wget -O installer-mikhmon https://raw.githubusercontent.com/heruhendri/Installer-Mikhmon-VPS/master/installer-mikhmon
-chmod +x installer-mikhmon
-./installer-mikhmon
+wget -O installer-mikhmon https://raw.githubusercontent.com/heruhendri/Installer-Mikhmon-VPS/master/installer-mikhmon.sh
+chmod +x installer-mikhmon.sh
+./installer-mikhmon.sh
 ```
 
 ### **2. CURL**
 
 ```bash
-curl -o installer-mikhmon https://raw.githubusercontent.com/heruhendri/Installer-Mikhmon-VPS/master/installer-mikhmon
-chmod +x installer-mikhmon
-./installer-mikhmon
+curl -o installer-mikhmon https://raw.githubusercontent.com/heruhendri/Installer-Mikhmon-VPS/master/installer-mikhmon.sh
+chmod +x installer-mikhmon.sh
+./installer-mikhmon.sh
 ```
 
 ### **3. One-line Auto Install**
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/heruhendri/Installer-Mikhmon-VPS/master/installer-mikhmon)
+bash <(curl -s https://raw.githubusercontent.com/heruhendri/Installer-Mikhmon-VPS/master/installer-mikhmon.sh)
 ```
 
 ---
