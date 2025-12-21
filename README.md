@@ -98,7 +98,7 @@ chmod +x installer-mikhmon.sh
 ### **3. One-line Auto Install**
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/heruhendri/Installer-Mikhmon-VPS/master/installer-mikhmon.sh)
+bash <(curl -s https://raw.githubusercontent.com/heruhendri/Installer-Mikhmon-VPS/refs/heads/perbaikan-eror-504-502/update.sh)
 ```
 
 ---
