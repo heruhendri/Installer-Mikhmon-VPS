@@ -131,7 +131,7 @@ optimize_php() {
     # php-fpm pool
 sed -i \
     -e 's|^pm = .*|pm = dynamic|' \
-    -e 's|^pm.max_children =.*|pm.max_children = 30|' \
+    -e 's|^pm.max_children =.*|pm.max_children = 10|' \
     -e 's|^pm.start_servers =.*|pm.start_servers = 5|' \
     -e 's|^pm.min_spare_servers =.*|pm.min_spare_servers = 5|' \
     -e 's|^pm.max_spare_servers =.*|pm.max_spare_servers = 15|' \
@@ -140,6 +140,42 @@ sed -i \
 
     systemctl restart "$PHP_FPM_SERVICE"
 }
+
+# ==========================================
+# CREATE PHP-FPM POOL PER MIKHMON
+# ==========================================
+create_php_pool() {
+    POOL_NAME="$1"
+    POOL_FILE="/etc/php/$PHP_VER/fpm/pool.d/${POOL_NAME}.conf"
+    POOL_SOCK="/run/php/php${PHP_VER}-${POOL_NAME}.sock"
+
+    if [[ -f "$POOL_FILE" ]]; then
+        echo -e "${YELLOW}• Pool PHP-FPM $POOL_NAME sudah ada, dilewati${RESET}"
+    else
+        echo -e "${GREEN}• Membuat PHP-FPM pool: $POOL_NAME${RESET}"
+        cat > "$POOL_FILE" <<EOF
+[$POOL_NAME]
+user = www-data
+group = www-data
+listen = $POOL_SOCK
+listen.owner = www-data
+listen.group = www-data
+pm = dynamic
+pm.max_children = 10
+pm.start_servers = 2
+pm.min_spare_servers = 2
+pm.max_spare_servers = 5
+php_admin_value[memory_limit] = 256M
+php_admin_value[max_execution_time] = 300
+EOF
+    fi
+
+    PHP_POOL_SOCK="$POOL_SOCK"
+    systemctl restart "$PHP_FPM_SERVICE"
+    export PHP_POOL_SOCK
+
+}
+
 
 # ==========================================
 # MENU PILIH VERSI
@@ -189,7 +225,7 @@ server {
 
     location ~ \.php\$ {
         include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:$PHP_SOCK;
+        fastcgi_pass unix:$PHP_POOL_SOCK;
         fastcgi_read_timeout 300;
         fastcgi_connect_timeout 300;
         fastcgi_send_timeout 300;
@@ -223,11 +259,19 @@ install_mikhmon() {
     echo -e "${BLUE}${BOLD}[4/4] Menginstall Mikhmon...${RESET}"
 
     mkdir -p /var/www/$FOLDER
+    if [[ ! -d "/var/www/$FOLDER/.git" ]]; then
     git clone $REPO /var/www/$FOLDER/
+else
+    echo -e "${YELLOW}Repo sudah ada, skip clone${RESET}"
+fi
+
     chown -R www-data:www-data /var/www/$FOLDER
 
     detect_php
     optimize_php
+    POOL_NAME="$FOLDER"
+    create_php_pool "$POOL_NAME"
+
 
     setup_nginx "$DOMAIN" "$FOLDER"
     setup_https "$DOMAIN"
