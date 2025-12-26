@@ -97,21 +97,26 @@ install_base() {
 # AUTO DETECT PHP VERSION & SOCKET
 # ==========================================
 detect_php() {
-    PHP_VER=$(php -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;' 2>/dev/null || true)
+    PHP_VER=$(php -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;' 2>/dev/null)
 
     if [[ -z "$PHP_VER" ]]; then
-        echo -e "${RED}PHP belum terinstall atau gagal terdeteksi${RESET}"
+        echo -e "${RED}PHP tidak terdeteksi${RESET}"
         exit 1
     fi
 
     PHP_FPM_SERVICE="php${PHP_VER}-fpm"
-    PHP_SOCK="/run/php/php${PHP_VER}-fpm.sock"
 
-    if [[ ! -S "$PHP_SOCK" ]]; then
-        echo -e "${RED}Socket PHP-FPM tidak ditemukan: $PHP_SOCK${RESET}"
+    # Pastikan service php-fpm berjalan
+    systemctl start "$PHP_FPM_SERVICE"
+
+    if ! systemctl is-active --quiet "$PHP_FPM_SERVICE"; then
+        echo -e "${RED}Service $PHP_FPM_SERVICE gagal dijalankan${RESET}"
         exit 1
     fi
+
+    # ⚠️ JANGAN cek socket default di mode multi-pool
 }
+
 
 # ==========================================
 # OPTIMIZE PHP & PHP-FPM (ANTI 502 / 504)
@@ -173,6 +178,10 @@ EOF
     PHP_POOL_SOCK="$POOL_SOCK"
     systemctl restart "$PHP_FPM_SERVICE"
     export PHP_POOL_SOCK
+if [[ ! -S "$POOL_SOCK" ]]; then
+    echo -e "${RED}Socket pool PHP-FPM gagal dibuat: $POOL_SOCK${RESET}"
+    exit 1
+fi
 
 }
 
